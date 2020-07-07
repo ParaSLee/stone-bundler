@@ -50,7 +50,7 @@ npm run build
 │</br>
 │-- stoneNotes.js   // 打包核心代码，保留了**所有注释**</br>
 │</br>
-│-- **stone.config.js** // 打包**配置文件**</br>
+│-- **stone.config.js** // 打包配置文件</br>
 │</br>
 │   // 其他文件</br>
 │-- .gitignore</br>
