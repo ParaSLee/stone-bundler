@@ -41,9 +41,9 @@ npm run build
 .stone-bundler</br>
 │</br>
 │-- src // 打包用的文件夹</br>
-│  │-- index.js   // 入口文件</br>
-│  │-- message.js // 依赖文件1</br>
-│  │-- word.js    // 依赖文件2</br>
+│   │-- index.js   // 入口文件</br>
+│   │-- message.js // 依赖文件1</br>
+│   │-- word.js    // 依赖文件2</br>
 │</br>
 │-- **stone.js**        // 打包核心代码，保留了**部分比较重要的注释**</br>
 │</br>
