@@ -36,20 +36,21 @@ npm run build
 ### ⚠️注意
 代码文件如果使用了模块化语法，需要写出完整的后缀（如 `index.js` ），打包工具没有对文件后缀做兼容处理
 
+</br>
 
 ## 📦目录
 .stone-bundler</br>
 │</br>
 │-- src // 打包用的文件夹</br>
-│   │-- index.js   // 入口文件</br>
-│   │-- message.js // 依赖文件1</br>
-│   │-- word.js    // 依赖文件2</br>
+│  │-- index.js   // 入口文件</br>
+│  │-- message.js // 依赖文件1</br>
+│  │-- word.js    // 依赖文件2</br>
 │</br>
 │-- **stone.js**        // 打包核心代码，保留了**部分比较重要的注释**</br>
 │</br>
 │-- stoneNotes.js   // 打包核心代码，保留了**所有注释**</br>
 │</br>
-│-- **stone.config.js** // 打包配置文件</br>
+│-- **stone.config.js** // 打包**配置文件**</br>
 │</br>
 │   // 其他文件</br>
 │-- .gitignore</br>
