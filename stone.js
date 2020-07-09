@@ -1,4 +1,5 @@
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const chalk = require('chalk');
 const parser = require('@babel/parser');
@@ -7,9 +8,12 @@ const babel = require('@babel/core');
 
 const stoneConfig = require('./stone.config.js');
 
+const iswin = os.platform() === 'win32';
+const isMac = os.platform() === 'darwin';
+
 /**
  * @function 模块分析
- * @param {string} filePath 
+ * @param {string} filePath
  * @description 找出一个模块引入了哪些依赖，并获取编译后的代码
  * @returns {
  *  filePath 相对根路径的路径 ex. ./src/index.js
@@ -138,7 +142,10 @@ function bundleCode() {
         // 没文件夹就创建文件夹
         let hasDir = true;
         if (err) {
-            if (err.errno === -4058) {
+            if (
+                (iswin && err.errno === -4058)
+                || (isMac && err.errno === -2)
+            ) {
                 fs.mkdir(outPath, {recursive: true}, err => {
                     if (err) {
                         throw err;
@@ -154,7 +161,7 @@ function bundleCode() {
         if (hasDir) {
             files = fs.readdirSync(outPath);
             files.forEach((file) => {
-                let curPath = outPath + "\\" + file;
+                let curPath = outPath + (iswin ? '\\' :"/") + file;
                 fs.unlinkSync(curPath);
             });
         }

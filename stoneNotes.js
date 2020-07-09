@@ -1,4 +1,5 @@
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const chalk = require('chalk');
 // 用来解析js代码，把js代码解析成抽象语法树（AST）
@@ -9,10 +10,14 @@ const traverse = require("@babel/traverse").default;
 const babel = require('@babel/core');
 
 const stoneConfig = require('./stone.config.js');
+// 是否是windows
+const iswin = os.platform() === 'win32';
+// 是否是mac
+const isMac = os.platform() === 'darwin';
 
 /**
  * @function 模块分析
- * @param {string} filePath 
+ * @param {string} filePath
  * @description 找出一个模块引入了哪些依赖，并获取编译后的代码
  * @returns {
  *  filePath 相对根路径的路径 ex. ./src/index.js
@@ -83,6 +88,7 @@ const moduleGraph = (entry) => {
     };
     const graph = {};
 
+    // 递归遍历所有的模块
     for (let i = 0; i < moduleMuster.length; i++) {
         const {filePath} = moduleMuster[i];
 
@@ -93,7 +99,7 @@ const moduleGraph = (entry) => {
                 dependencies,
                 code
             };
-    
+
             // 遍历模块里的依赖，分析依赖文件，放入模块集合中，之后的循环里再进行解析
             for (let key in dependencies) {
                 if (!cache[dependencies[key]]) {
@@ -131,6 +137,7 @@ const generateCode = (entry) => {
                 // 子模块的内容存放在exports中，需要创建空对象以便使用。
                 var exports = {};
 
+                // 使用闭包避免模块之间的变量污染
                 (function(code, require, exports) {
                     // 通过eval执行代码
                     eval(code);
@@ -162,7 +169,10 @@ function bundleCode() {
         // 如果没有文件夹就创建
         let hasDir = true;
         if (err) {
-            if (err.errno === -4058) {
+            if (
+                (iswin && err.errno === -4058) // windows电脑错误码为4058
+                || (isMac && err.errno === -2) // mac电脑错误码为-2
+            ) {
                 fs.mkdir(outPath, {recursive: true}, err => {
                     if (err) {
                         throw err;
@@ -178,7 +188,7 @@ function bundleCode() {
         if (hasDir) {
             files = fs.readdirSync(outPath);
             files.forEach((file) => {
-                let curPath = outPath + "\\" + file;
+                let curPath = outPath + (iswin ? '\\' :"/") + file;
                 fs.unlinkSync(curPath);
             });
         }

@@ -12,7 +12,7 @@
     "@babel/traverse": "7.10.4"
   },
   "scripts": {
-    "build": "node stone"
+    "build": "node stone.js"
   },
   "keywords": [],
   "author": "",
